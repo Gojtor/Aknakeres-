@@ -25,6 +25,8 @@ namespace Aknakereső
         int mezoNagysag = 5;
         int aknakSzama = 5;
         int timerErtek = 0;
+        int[,] tablaTomb;
+        
         
         Button kezdoGomb;
         Random random = new Random();
@@ -85,6 +87,13 @@ namespace Aknakereső
             {
                 int oszlop = random.Next(0, mezoNagysag);
                 int sor = random.Next(0, mezoNagysag);
+                tablaTomb[sor, oszlop] = -1;
+                /* Ha már teljesen a tömbből megy a program működése erre kell lecserélni hogy ne legyen ugyanott akna
+                if (tablaTomb[sor,oszlop]==-1)
+                {
+                    i--;
+                }
+                */
                 Button akna = new Button();     
                 akna.Name = "akna";
                 akna.Click += kezdoGomb_Click;
@@ -157,6 +166,14 @@ namespace Aknakereső
         {
             ComboBoxItem tartalom = ((sender as ComboBox).SelectedItem as ComboBoxItem);
             mezoNagysag = int.Parse(tartalom.Content.ToString());
+            tablaTomb = new int[mezoNagysag,mezoNagysag];
+            for (int sor = 0; sor < mezoNagysag; sor++)
+            {
+                for (int oszlop = 0; oszlop < mezoNagysag; oszlop++)
+                {
+                    tablaTomb[sor, oszlop] = 0;
+                }
+            }
         }
     }
 }
