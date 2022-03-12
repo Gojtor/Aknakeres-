@@ -73,7 +73,7 @@ namespace Aknakereső
                     {
                         kezdoGomb = new Button();
                         //kezdoGomb.Name = "kezdoGomb"+sor+oszlop;
-                        kezdoGomb.Click += kezdoGomb_Click;
+                        kezdoGomb.Click += gomb_Click;
                         Grid.SetRow(kezdoGomb, sor);
                         Grid.SetColumn(kezdoGomb, oszlop);
                         aknaMezo.Children.Add(kezdoGomb);
@@ -97,20 +97,46 @@ namespace Aknakereső
                 }
    
             }
+            mennyiSzomszedAkna();
+        }
 
-            //Work in progress...
-            for (int i = 0; i < aknaMezo.Children.OfType<Button>().Count(); i++)
+        private void mennyiSzomszedAkna()
+        {
+            for (int sor = 0; sor < mezoNagysag; sor++)
             {
-                Button childGomb = aknaMezo.Children[i] as Button;
-                if (childGomb.Name == "akna") continue;
-
-                int childOszlop = Grid.GetColumn(childGomb);
-                int childSor = Grid.GetRow(childGomb);
-                
-
+                for (int oszlop = 0; oszlop < mezoNagysag; oszlop++)
+                {
+                    if (tablaTomb[sor,oszlop]==-1)
+                    {
+                        for (int szomszedSor = -1; szomszedSor < 2; szomszedSor++)
+                        {
+                            for (int szomszedOszlop = -1; szomszedOszlop < 2; szomszedOszlop++)
+                            {
+                                if ((sor+szomszedSor>=0) && (oszlop+szomszedOszlop>=0) && (mezoNagysag>sor + szomszedSor) && (mezoNagysag > oszlop+szomszedOszlop))
+                                {
+                                    if (szomszedOszlop==0 && szomszedSor==0)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        if(tablaTomb[sor + szomszedSor, (oszlop + szomszedOszlop)]==-1)
+                                        {
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            tablaTomb[(sor + szomszedSor), (oszlop + szomszedOszlop)]++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-        
+
         //Időzítő felhasználása
         private void timer_Tick(object sender, EventArgs e)
         {  
@@ -122,7 +148,7 @@ namespace Aknakereső
         }
 
         //Ha rákkatintunk egy gombra akkor annak a content property-ét megtudjuk a tablaTomb tartalma alapján
-        public void kezdoGomb_Click(object sender, RoutedEventArgs e)
+        public void gomb_Click(object sender, RoutedEventArgs e)
         {          
             var pozicio = (UIElement)e.Source;
             int oszlop = Grid.GetColumn(pozicio); ;
@@ -137,7 +163,7 @@ namespace Aknakereső
             aknakSzama = int.Parse(tartalom.Content.ToString());
         }
 
-        //ComboBoxban megadott mező nagyságának értékének megszerzése
+        //ComboBoxban megadott mező nagyságának értékének megszerzése és az alapján a tablaTomb feltöltése
         private void mezoListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem tartalom = ((sender as ComboBox).SelectedItem as ComboBoxItem);
