@@ -80,39 +80,20 @@ namespace Aknakereső
                     }
                 }
 
-            //Aknák random helyének generálása és az azon a helyen lévő gomb kicserlélése akna gombra
+            //Aknák random helyének generálása és eltárolása a tablaTomb-be
             
-            List<string> poziciók = new List<string>();
             for (int i = 0; i < aknakSzama; i++)
             {
                 int oszlop = random.Next(0, mezoNagysag);
                 int sor = random.Next(0, mezoNagysag);
-                tablaTomb[sor, oszlop] = -1;
-                /* Ha már teljesen a tömbből megy a program működése erre kell lecserélni hogy ne legyen ugyanott akna
+                // Ha már teljesen a tömbből megy a program működése erre kell lecserélni hogy ne legyen ugyanott akna
                 if (tablaTomb[sor,oszlop]==-1)
-                {
-                    i--;
-                }
-                */
-                Button akna = new Button();     
-                akna.Name = "akna";
-                akna.Click += kezdoGomb_Click;
-                Grid.SetRow(akna, sor);
-                Grid.SetColumn(akna, oszlop);
-                //Ne legyen ugyanoott akna ahol már van
-                if (poziciók.Count==0)
-                {
-                    poziciók.Add((sor.ToString()) + (oszlop.ToString()));
-                    aknaMezo.Children.Add(akna);
-                }
-                else if(poziciók.Contains((sor.ToString()) + (oszlop.ToString())))
                 {
                     i--;
                 }
                 else
                 {
-                    poziciók.Add((sor.ToString()) + (oszlop.ToString()));
-                    aknaMezo.Children.Add(akna);
+                    tablaTomb[sor, oszlop] = -1;
                 }
    
             }
@@ -140,18 +121,13 @@ namespace Aknakereső
             timerErtek++;
         }
 
-        //Ha rákkatintunk egy gombra akkor annak a name property-ét megtudjuk
+        //Ha rákkatintunk egy gombra akkor annak a content property-ét megtudjuk a tablaTomb tartalma alapján
         public void kezdoGomb_Click(object sender, RoutedEventArgs e)
-        {
-            Button mezoGomb = new Button();
+        {          
             var pozicio = (UIElement)e.Source;
-            mezoGomb.Content = pozicio.GetValue(Button.NameProperty);
             int oszlop = Grid.GetColumn(pozicio); ;
             int sor = Grid.GetRow(pozicio);
-            Grid.SetColumn(mezoGomb, oszlop);
-            Grid.SetRow(mezoGomb, sor);
-            aknaMezo.Children.Add(mezoGomb);
-
+            pozicio.SetValue(Button.ContentProperty,tablaTomb[sor,oszlop]);
         }
 
         //Megadott akna mennyiségének megszerzése
