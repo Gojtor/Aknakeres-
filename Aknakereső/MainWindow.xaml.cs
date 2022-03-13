@@ -83,7 +83,7 @@ namespace Aknakereső
                 {
                     kezdoGomb = new Button();
                     //kezdoGomb.Name = "kezdoGomb"+sor+oszlop;
-                    kezdoGomb.Click += gomb_Click;
+                    kezdoGomb.PreviewMouseDown += gomb_Click;
                     Grid.SetRow(kezdoGomb, sor);
                     Grid.SetColumn(kezdoGomb, oszlop);
                     aknaMezo.Children.Add(kezdoGomb);
@@ -158,23 +158,44 @@ namespace Aknakereső
         }
 
         //Ha rákkatintunk egy gombra akkor annak a content property-ét megtudjuk a tablaTomb tartalma alapján
-        public void gomb_Click(object sender, RoutedEventArgs e)
+        public void gomb_Click(object sender, MouseButtonEventArgs e)
         {
             int oszlop = Grid.GetColumn((Button)sender);
             int sor = Grid.GetRow((Button)sender);
             UIElement btn = e.Source as UIElement;
-            setButtonContent(sor, oszlop, btn);
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                setButtonContent(sor, oszlop, btn);
+            }
+            else
+            {
+                putFlag(sor,oszlop,btn);
+            }
+            e.Handled = true;
+        }
+
+        private void putFlag(int sor, int oszlop, UIElement btn)
+        {
+            btn.SetValue(Button.BackgroundProperty, Brushes.PaleVioletRed);
+            btn.SetValue(Button.ContentProperty, "F");
         }
 
         private void setButtonContent(int sor, int oszlop, UIElement btn)
         {
             if (btn.GetValue(NameProperty).ToString() != "volt")
-            {              
+            {
                 btn.SetValue(Button.ContentProperty, tablaTomb[sor, oszlop]);
-                btn.SetValue(Button.BackgroundProperty, Brushes.White);
+                if (tablaTomb[sor, oszlop] == -1)
+                {
+                    btn.SetValue(Button.BackgroundProperty, Brushes.Red);
+                    MessageBox.Show("Akna xd vesztettél öcsi");
+                }
+                else
+                {
+                    btn.SetValue(Button.BackgroundProperty, Brushes.White);
+                }
                 btn.SetValue(NameProperty, "volt");
-
-                if (tablaTomb[sor,oszlop] == 0)
+                if (tablaTomb[sor, oszlop] == 0)
                 {
                     btn.SetValue(Button.ContentProperty, null);
                     floodFill(sor, oszlop, btn);
