@@ -16,22 +16,11 @@
             <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="150,0,20,0" Width="70" Content=" Start " FontSize="25px" Name="startBtn" Click="startBtn_Click" />
             <Label Content="Mekkora mező" Margin="235,0,80,26" FontSize="9px"/>
             <Label Content="Mennyi akna" Margin="312,0,0,26" FontSize="9px"/>
-            <ComboBox HorizontalAlignment="Left" Height="26" Margin="246,19,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.531,0.404" Name="mezoListBox" SelectionChanged="mezoListBox_SelectionChanged">
-                <ComboBoxItem Content="5" IsSelected="True" />
-                <ComboBoxItem Content="6"/>
-                <ComboBoxItem Content="7"/>
-                <ComboBoxItem Content="8"/>
-                <ComboBoxItem Content="9"/>
-                <ComboBoxItem Content="10"/>
-            </ComboBox>
-            <ComboBox HorizontalAlignment="Left" Height="26" Margin="317,19,0,0" VerticalAlignment="Top" Width="49" RenderTransformOrigin="0.531,0.404" Name="aknaListBox" SelectionChanged="aknaListBox_SelectionChanged">
-                <ComboBoxItem Content="5" IsSelected="True"/>
-                <ComboBoxItem Content="6" />
-                <ComboBoxItem Content="7"/>
-                <ComboBoxItem Content="8"/>
-                <ComboBoxItem Content="9"/>
-                <ComboBoxItem Content="10"/>
-            </ComboBox>
+            <TextBox HorizontalAlignment="Left" Height="26" Margin="246,19,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.531,0.404" Name="mezoTextBox">
+               
+            </TextBox>
+            <TextBox HorizontalAlignment="Left" Height="26" Margin="317,19,0,0" VerticalAlignment="Top" Width="49" RenderTransformOrigin="0.531,0.404" Name="aknaTextBox">
+            </TextBox>
 
         </Grid>
         <Grid Grid.Row="1" Name="aknaMezo" Margin="15">
